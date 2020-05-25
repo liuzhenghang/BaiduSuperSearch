@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="result.png" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>百度高级搜索</title>
+    <script src="jquery-1.12.4.js"></script>
+    <script src="layer/layer.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js.js"></script>
+    <style>@import "layui/css/layui.css";</style>
+    <style>
+        *{padding: 0;margin: 0;}
+        html,body{width: 100%;height: 100%}
+        #bg{
+            background: url("https://api.moleft.cn/bing/images.php");
+            height: 100%;
+            width: 100%;
+            float: left;
+            transition: all 200ms;
+        }
+        .bg-bul{
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            -webkit-filter: blur(15px);
+            -moz-filter: blur(15px);
+            -o-filter: blur(15px);
+            -ms-filter: blur(15px);
+            filter: blur(15px);
+        }
+        #main{
+            position:absolute;
+            width: 100%;
+            height: 100%;
+        }
+        #foot{
+            position:absolute;
+            width: 100%;
+            height: 10%;
+            bottom: 0px;
+            background: rgba(0,0,0,0.3);
+            transition: all 300ms;
+            z-index: 99;
+        }
+        #foot:hover{
+            /*background: rgba(255,255,255,0.9);*/
+            background: rgba(0,0,0,0.7);
+        }
+        #box{
+            transition: all 300ms;
+            background: rgba(255,255,255,0.3);
+            position: relative;
+            top: 20%;
+            box-shadow: rgb(11, 234, 235) 0px 0px 10px inset;
+            text-align: center;
+            width: 40%;
+            margin: auto;
+            height: auto;
+        }
+        #box:hover{background: rgba(255,255,255,0.7);}
+        .layui-form-item{
+            margin: auto;
+            width: 90%;
+        }
+        #imgText{
+            text-align: right;
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+        }
+        #foot,#foot a{
+            color: white;
+            line-height: 20px;
+        }
+        #foot p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="bg"></div>
+<div id="foot">
+<h4 id="imgText"></h4>
+<strong><p>© 2020 <a href="http://bds.qxhua21.cn">百度高级搜索</a>
+    <a href="https://github.com/liuzhenghang/BaiduSuperSearch">Github</a></p></strong>
+</div>
+<div id="main" class="layui-form">
+    <div id="box">
+        <h1 style="font-size: 50px"><strong>Baidu So</strong></h1>
+        <div class="layui-form-item">
+<!--            <label class="layui-form-label">关键词：</label>-->
+<!--            <div  class="layui-input-block">-->
+                <input id="word" type="text" name="word" required
+                       lay-verify="required" placeholder="请输入关键词,多个关键词请用空格分开" class="layui-input">
+<!--            </div>-->
+        </div>
+        <div class="layui-form-item">
+<!--            <div class="layui-input-block">-->
+                <input type="checkbox" id="accurate" title="精确搜索">
+                <input type="checkbox" id="delChk" title="排除词汇">
+                <input type="checkbox" id="tittle" title="指定标题">
+                <br>
+                <input type="checkbox" id="body" title="指定正文">
+                <input type="checkbox" id="siteChk" title="指定站点">
+                <input type="checkbox" id="fileChk" title="文件类型">
+<!--            </div>-->
+        </div>
+        <div id="tittleValBox" class="layui-form-item">
+            <label class="layui-form-label">标题检索</label>
+            <div class="layui-input-block">
+                <input id="tittleVal" type="text" name="word" required
+                       lay-verify="required" placeholder="请输入标题关键字,多个关键词请用空格分开" class="layui-input">
+            </div>
+        </div>
+        <div id="textValBox" class="layui-form-item">
+            <label class="layui-form-label">正文检索</label>
+            <div class="layui-input-block">
+                <input id="textVal" type="text" name="word" required
+                       lay-verify="required" placeholder="请输入正文关键字,多个关键词请用空格分开" class="layui-input">
+            </div>
+        </div>
+        <div id="delValBox" class="layui-form-item">
+            <label class="layui-form-label">排除词汇</label>
+            <div  class="layui-input-block">
+                <input id="del" type="text" name="del" required
+                       lay-verify="required" placeholder="请输入排除关键词,多个关键词请用空格分开" class="layui-input">
+            </div>
+        </div>
+        <div id="siteValBox" class="layui-form-item">
+            <label class="layui-form-label">搜索站点</label>
+            <div style="width: 50%;float: left;" class="layui-input-block">
+                <select id="site" lay-filter="site" lay-verify="required">
+                    <option value="">全站搜索</option>
+                    <option value="zhihu.com">知乎 zhihu.com</option>
+                    <option value="hao4k.cn">hao4k社区 hao4k.cn</option>
+                    <option value="csdn.net">CSDN csdn.net</option>
+                    <option value="cnblogs.com">博客园 cnblogs.com</option>
+                    <option value="null">自定义站点</option>
+                </select>
+                <input id="siteVal" type="text" name="del" required
+                       lay-verify="required" placeholder="请输入要查询的网站" class="layui-input">
+            </div>
+            <input type="checkbox" id="siteVague" lay-skin="switch" lay-text="精确|模糊" checked>
+        </div>
+
+        <div id="fileValBox" class="layui-form-item">
+            <label class="layui-form-label">文件类型</label>
+            <div style="width: 50%;float: left;" class="layui-input-block">
+                <select id="file" lay-filter="file" lay-verify="required">
+                    <option value="">不搜索文件</option>
+                    <option value="pdf">PDF(格式文档)</option>
+                    <option value="txt">txt(文本文档)</option>
+                    <option value="doc">DOC(word)</option>
+                    <option value="docx">DOCX(word2010+)</option>
+                    <option value="ppt">PPT(PowerPoint)</option>
+                    <option value="pptx">pptx(PowerPoint2010+)</option>
+                    <option value="jar">jar(Java包)</option>
+                    <option value="null">自定义文件类型</option>
+                </select>
+                <input id="fileVal" type="text" name="del" required
+                       lay-verify="required" placeholder="请输入要查询的文件类型" class="layui-input">
+            </div>
+        </div>
+        <button id="so" type="button" class="layui-btn layui-btn-fluid">搜索一下</button>
+<!--        <button >搜索一下</button>-->
+    </div>
+</div>
+
+</body>
+<script>
+    let site=null;
+    let file=null;
+    bodyLoad();
+</script>
+</html>
